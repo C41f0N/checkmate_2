@@ -22,7 +22,11 @@ class TaskCard extends StatelessWidget {
           color: Theme.of(context).colorScheme.surface,
           child: Row(
             children: [
-              Checkbox(value: task.completed, onChanged: (x) {}),
+              Checkbox(
+                  value: task.completed,
+                  onChanged: (x) {
+                    onTap!();
+                  }),
               Flexible(
                 child: AutoSizeText(
                   task.name,
