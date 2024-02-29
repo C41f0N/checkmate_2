@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class TaskDatabase extends ChangeNotifier {
   late List<TaskList> taskLists;
+  late String currentTaskListName;
 
   TaskDatabase() {
     taskLists = [
@@ -13,6 +14,8 @@ class TaskDatabase extends ChangeNotifier {
         Task("task 3", true),
       ])
     ];
+
+    currentTaskListName = "New Task List";
   }
 
   // Function to trigger toggle task function in the respective task list.

@@ -31,6 +31,13 @@ class MyApp extends StatelessWidget {
             surface: Colors.transparent,
             onSurface: Colors.grey[200]!,
           ),
+          inputDecorationTheme: InputDecorationTheme(
+            fillColor: const Color.fromARGB(255, 15, 25, 41),
+            filled: true,
+            labelStyle: TextStyle(
+              color: Colors.grey[400],
+            ),
+          ),
           useMaterial3: true,
         ),
         home: const HomePage(),

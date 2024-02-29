@@ -1,4 +1,6 @@
 import 'package:checkmate_2/data_ops/task_database.dart';
+import 'package:checkmate_2/dialogues/add_task.dart';
+import 'package:checkmate_2/dialogues/add_task_list.dart';
 import 'package:checkmate_2/models/task_list_model.dart';
 import 'package:checkmate_2/models/task_model.dart';
 import 'package:checkmate_2/widgets/task_card.dart';
@@ -68,7 +70,9 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: GestureDetector(
                     onTap: () {
-                      database.addTaskList("Another Task List");
+                      showDialog(
+                          context: context,
+                          builder: (context) => const AddTaskListDialogue());
                     },
                     child: Container(
                       height: 50,
@@ -94,6 +98,15 @@ class _HomePageState extends State<HomePage> {
                 database.toggleTask(taskList.name, taskList.tasks[index].name);
               },
             ),
+          ),
+
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => const AddTaskDialogue());
+            },
+            child: const Icon(Icons.add),
           ),
         );
       },
