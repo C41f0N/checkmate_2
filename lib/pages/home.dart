@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
     return Consumer<TaskDatabase>(
       builder: (context, database, child) {
         TaskList taskList = database.getCurrentTaskList();
+        database.getDataFromDevice();
 
         return Scaffold(
           // AppBar

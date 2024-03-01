@@ -3,12 +3,32 @@ import 'dart:convert';
 import 'package:checkmate_2/models/task_list_model.dart';
 import 'package:checkmate_2/models/task_model.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class TaskDatabase extends ChangeNotifier {
   late List<TaskList> taskLists;
   late String currentTaskListName;
 
+  Box localDatabase = Hive.box("CHECKMATE_DATABASE");
+
   TaskDatabase() {
+    String? previouslyStoredData = localDatabase.get("JSON_TASKS_DATA");
+
+    // First time opening the app
+    if (previouslyStoredData == null) {
+      // Creating default data
+      loadDefaultData();
+
+      // Save data to local database
+      saveDataToDevice();
+    } else {
+      // Fetch tasks and task lists
+      getDataFromDevice();
+      currentTaskListName = taskLists[0].name;
+    }
+  }
+
+  void loadDefaultData() {
     taskLists = [
       TaskList("New Task List", [
         Task("task 1", true),
@@ -17,7 +37,7 @@ class TaskDatabase extends ChangeNotifier {
       ])
     ];
 
-    currentTaskListName = "New Task List";
+    currentTaskListName = taskLists[0].name;
   }
 
   // Function to trigger toggle task function in the respective task list.
@@ -28,6 +48,9 @@ class TaskDatabase extends ChangeNotifier {
 
     // Calling the function
     taskLists[taskListIndex].toggleTask(taskName);
+
+    // Save data to local database
+    saveDataToDevice();
 
     // Notifying listeners of change
     notifyListeners();
@@ -42,6 +65,9 @@ class TaskDatabase extends ChangeNotifier {
     // Calling the function
     taskLists[taskListIndex].addTask(taskName);
 
+    // Save data to local database
+    saveDataToDevice();
+
     // Notifying Listeners
     notifyListeners();
   }
@@ -54,6 +80,9 @@ class TaskDatabase extends ChangeNotifier {
 
     // Calling the function
     taskLists[taskListIndex].deleteTask(taskName);
+
+    // Save data to local database
+    saveDataToDevice();
 
     // Notifying Listeners
     notifyListeners();
@@ -76,6 +105,9 @@ class TaskDatabase extends ChangeNotifier {
       // Add the task list
       taskLists.add(TaskList(taskListName, []));
 
+      // Save data to local database
+      saveDataToDevice();
+
       // Notify listeners
       notifyListeners();
     }
@@ -95,6 +127,9 @@ class TaskDatabase extends ChangeNotifier {
       // Remove the task list
       taskLists.removeWhere((taskList) => taskList.name == taskListName);
 
+      // Save data to local database
+      saveDataToDevice();
+
       // Notify listeners
       notifyListeners();
     }
@@ -109,6 +144,10 @@ class TaskDatabase extends ChangeNotifier {
     // Calling the function
     taskLists[taskListIndex].deleteAllCompletedTasks();
 
+    // Save data to local database
+    saveDataToDevice();
+
+    // Notify listeners
     notifyListeners();
   }
 
@@ -141,16 +180,33 @@ class TaskDatabase extends ChangeNotifier {
   }
 
   // To load data from json string
-  void fromJson(String jsonData) {
-    // Decoding the string data to Map structure
-    Map<String, dynamic> databaseData = jsonDecode(jsonData);
-
+  void fromJson(Map<String, dynamic> jsonData) {
     // Loading the Map structure for taskLists
-    List<dynamic> taskListsJson = databaseData["taskLists"];
+    List<dynamic> taskListsJson = jsonData["taskLists"];
 
     // Using the loaded Map structure to create TaskList objects
     taskLists = taskListsJson
         .map((jsonTaskList) => TaskList.fromJson(jsonTaskList))
         .toList();
+  }
+
+  // Function to save data to local storage
+  void saveDataToDevice() {
+    // Encode data to string
+    String data = jsonEncode(toJson());
+
+    // Store data
+    localDatabase.put("JSON_TASKS_DATA", data);
+  }
+
+  void getDataFromDevice() {
+    // Get data
+    String data = localDatabase.get("JSON_TASKS_DATA");
+
+    // Decode data to Map
+    Map<String, dynamic> structuredData = jsonDecode(data);
+
+    // Load the data
+    fromJson(structuredData);
   }
 }

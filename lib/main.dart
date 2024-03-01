@@ -1,9 +1,14 @@
 import 'package:checkmate_2/data_ops/task_database.dart';
 import 'package:checkmate_2/pages/home.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  await Hive.initFlutter();
+
+  await Hive.openBox("CHECKMATE_DATABASE");
+
   runApp(const MyApp());
 }
 
