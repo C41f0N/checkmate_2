@@ -98,6 +98,18 @@ class TaskDatabase extends ChangeNotifier {
     }
   }
 
+  // Function to trigger deleteAllCompletedTasks in the respective task list
+  void deleteAllCompletedTasks(String taskListName) {
+    // Getting the appropriate task list.
+    int taskListIndex =
+        taskLists.indexWhere((taskList) => taskList.name == taskListName);
+
+    // Calling the function
+    taskLists[taskListIndex].deleteAllCompletedTasks();
+
+    notifyListeners();
+  }
+
   // Function to check if a task list already exists by name
   bool taskListExists(String taskListName) {
     return taskLists.indexWhere((taskList) => taskList.name == taskListName) !=

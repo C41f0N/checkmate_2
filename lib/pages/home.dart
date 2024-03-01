@@ -1,6 +1,7 @@
 import 'package:checkmate_2/data_ops/task_database.dart';
 import 'package:checkmate_2/dialogues/add_task.dart';
 import 'package:checkmate_2/dialogues/add_task_list.dart';
+import 'package:checkmate_2/dialogues/delete_all_completed_tasks.dart';
 import 'package:checkmate_2/dialogues/delete_task.dart';
 import 'package:checkmate_2/dialogues/delete_task_list.dart';
 import 'package:checkmate_2/models/task_list_model.dart';
@@ -130,25 +131,41 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          body: ListView.builder(
-            itemCount: taskList.tasks.length,
-            itemBuilder: (context, index) => TaskCard(
-              task: taskList.tasks[index],
-              onTap: () {
-                database.toggleTask(taskList.name, taskList.tasks[index].name);
-              },
-              onLongPress: () {
-                showDialog(
-                  context: context,
-                  builder: ((context) => DeleteTaskDialogue(
-                        taskName: taskList.tasks[index].name,
-                        deleteTaskMethod: () {
-                          database.deleteTask(
-                              taskList.tasks[index].name, taskList.name);
-                        },
-                      )),
-                );
-              },
+          body: GestureDetector(
+            // To delete all completed tasks
+            onDoubleTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => DeleteAllCompletedTasksDialogue(
+                  taskListName: database.currentTaskListName,
+                  deleteAllCompletedTasksMethod: () {
+                    database
+                        .deleteAllCompletedTasks(database.currentTaskListName);
+                  },
+                ),
+              );
+            },
+            child: ListView.builder(
+              itemCount: taskList.tasks.length,
+              itemBuilder: (context, index) => TaskCard(
+                task: taskList.tasks[index],
+                onTap: () {
+                  database.toggleTask(
+                      taskList.name, taskList.tasks[index].name);
+                },
+                onLongPress: () {
+                  showDialog(
+                    context: context,
+                    builder: ((context) => DeleteTaskDialogue(
+                          taskName: taskList.tasks[index].name,
+                          deleteTaskMethod: () {
+                            database.deleteTask(
+                                taskList.tasks[index].name, taskList.name);
+                          },
+                        )),
+                  );
+                },
+              ),
             ),
           ),
 

@@ -20,6 +20,11 @@ class TaskList {
     tasks.removeWhere((task) => task.name == taskName);
   }
 
+  // To delete all completed tasks
+  void deleteAllCompletedTasks() {
+    tasks.removeWhere((task) => task.completed);
+  }
+
   // To toggle a task's completion status
   void toggleTask(String taskName) {
     int toggleIndex = tasks.indexWhere((task) => task.name == taskName);
