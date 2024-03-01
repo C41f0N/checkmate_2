@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Consumer<TaskDatabase>(
       builder: (context, database, child) {
-        TaskList taskList = database.taskLists[0];
+        TaskList taskList = database.getCurrentTaskList();
         return Scaffold(
           // AppBar
           appBar: AppBar(
@@ -51,6 +51,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
+                const SizedBox(
+                  height: 10,
+                ),
+
                 // Check Lists
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.5,
@@ -58,8 +62,27 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     itemCount: database.taskLists.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(database.taskLists[index].name),
+                      return GestureDetector(
+                        onTap: () {
+                          database.setCurrentTaskList(
+                              database.taskLists[index].name);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: database.currentTaskListName ==
+                                    database.taskLists[index].name
+                                ? Theme.of(context).colorScheme.secondary
+                                : Theme.of(context).colorScheme.surface,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Text(
+                            database.taskLists[index].name,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
                       );
                     },
                   ),

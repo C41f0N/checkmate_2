@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
             brightness: Brightness.dark,
             primary: Colors.blue[900]!,
             onPrimary: const Color.fromARGB(255, 16, 16, 16),
-            secondary: Colors.blue[800]!,
+            secondary: const Color.fromARGB(255, 2, 18, 38),
             onSecondary: const Color.fromARGB(255, 16, 16, 16),
             error: Colors.red[900]!,
             onError: const Color.fromARGB(255, 16, 16, 16),

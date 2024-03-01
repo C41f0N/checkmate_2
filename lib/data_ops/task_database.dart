@@ -71,4 +71,17 @@ class TaskDatabase extends ChangeNotifier {
     return taskLists.indexWhere((taskList) => taskList.name == taskListName) !=
         -1;
   }
+
+  TaskList getCurrentTaskList() {
+    return taskLists
+        .firstWhere((taskList) => taskList.name == currentTaskListName);
+  }
+
+  void setCurrentTaskList(String listName) {
+    if (taskLists.indexWhere((taskList) => taskList.name == listName) != -1) {
+      currentTaskListName = listName;
+
+      notifyListeners();
+    }
+  }
 }
