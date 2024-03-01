@@ -79,6 +79,25 @@ class TaskDatabase extends ChangeNotifier {
     }
   }
 
+  // Function to delete a task list
+  void deleteTaskList(String taskListName) {
+    if (taskListExists(taskListName) && taskLists.length > 1) {
+      // Check if this task list is also the one being viewed
+      if (taskListName == currentTaskListName) {
+        // Set the current task list to any other task list
+        setCurrentTaskList(taskLists
+            .firstWhere((taskList) => taskList.name != taskListName)
+            .name);
+      }
+
+      // Remove the task list
+      taskLists.removeWhere((taskList) => taskList.name == taskListName);
+
+      // Notify listeners
+      notifyListeners();
+    }
+  }
+
   // Function to check if a task list already exists by name
   bool taskListExists(String taskListName) {
     return taskLists.indexWhere((taskList) => taskList.name == taskListName) !=

@@ -1,7 +1,8 @@
 import 'package:checkmate_2/data_ops/task_database.dart';
 import 'package:checkmate_2/dialogues/add_task.dart';
 import 'package:checkmate_2/dialogues/add_task_list.dart';
-import 'package:checkmate_2/dialogues/delete_task_dialogue.dart';
+import 'package:checkmate_2/dialogues/delete_task.dart';
+import 'package:checkmate_2/dialogues/delete_task_list.dart';
 import 'package:checkmate_2/models/task_list_model.dart';
 import 'package:checkmate_2/models/task_model.dart';
 import 'package:checkmate_2/widgets/task_card.dart';
@@ -64,10 +65,26 @@ class _HomePageState extends State<HomePage> {
                     itemCount: database.taskLists.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
+                        // To select the task list to view
                         onTap: () {
                           database.setCurrentTaskList(
                               database.taskLists[index].name);
                         },
+
+                        // To delete the task list
+                        onLongPress: () {
+                          showDialog(
+                            context: context,
+                            builder: ((context) => DeleteTaskListDialogue(
+                                  taskListName: database.taskLists[index].name,
+                                  deleteTaskListMethod: () {
+                                    database.deleteTaskList(
+                                        database.taskLists[index].name);
+                                  },
+                                )),
+                          );
+                        },
+
                         child: Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
@@ -121,17 +138,16 @@ class _HomePageState extends State<HomePage> {
                 database.toggleTask(taskList.name, taskList.tasks[index].name);
               },
               onLongPress: () {
-                // TODO Implement delete task
-
                 showDialog(
-                    context: context,
-                    builder: ((context) => DeleteTaskDialogue(
-                          taskName: taskList.tasks[index].name,
-                          deleteTaskMethod: () {
-                            database.deleteTask(
-                                taskList.tasks[index].name, taskList.name);
-                          },
-                        )));
+                  context: context,
+                  builder: ((context) => DeleteTaskDialogue(
+                        taskName: taskList.tasks[index].name,
+                        deleteTaskMethod: () {
+                          database.deleteTask(
+                              taskList.tasks[index].name, taskList.name);
+                        },
+                      )),
+                );
               },
             ),
           ),
