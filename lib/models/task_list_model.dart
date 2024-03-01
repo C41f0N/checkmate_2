@@ -14,6 +14,12 @@ class TaskList {
     }
   }
 
+  // To add a task to the list
+  void deleteTask(String taskName) {
+    // Delete the first occourance of task
+    tasks.removeWhere((task) => task.name == taskName);
+  }
+
   // To toggle a task's completion status
   void toggleTask(String taskName) {
     int toggleIndex = tasks.indexWhere((task) => task.name == taskName);

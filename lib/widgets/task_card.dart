@@ -7,10 +7,12 @@ class TaskCard extends StatelessWidget {
     super.key,
     required this.task,
     this.onTap,
+    this.onLongPress,
   });
 
   final Task task;
   final void Function()? onTap;
+  final void Function()? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +20,7 @@ class TaskCard extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       child: GestureDetector(
         onTap: onTap,
+        onLongPress: onLongPress,
         child: Container(
           color: Theme.of(context).colorScheme.surface,
           child: Row(

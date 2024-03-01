@@ -44,6 +44,19 @@ class TaskDatabase extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Function to trigger deleteTask in the respective taskList
+  void deleteTask(String taskName, String taskListName) {
+    // Getting the appropriate task list.
+    int taskListIndex =
+        taskLists.indexWhere((taskList) => taskList.name == taskListName);
+
+    // Calling the function
+    taskLists[taskListIndex].deleteTask(taskName);
+
+    // Notifying Listeners
+    notifyListeners();
+  }
+
   // To trigger the taskExist function in the specific taskList
   bool taskExists(String taskName, String taskListName) {
     // Getting the appropriate task list.
