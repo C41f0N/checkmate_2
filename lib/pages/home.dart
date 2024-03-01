@@ -174,19 +174,10 @@ class _HomePageState extends State<HomePage> {
 
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-<<<<<<< HEAD
               showDialog(
                 context: context,
                 builder: (context) => const AddTaskDialogue(),
               );
-=======
-              // showDialog(
-              //   context: context,
-              //   builder: (context) => const AddTaskDialogue(),
-              // );
-
-              print(jsonEncode(database.toJson()));
->>>>>>> 27be5eb55527ddb4c478465c16627c0def867da7
             },
             child: const Icon(Icons.add),
           ),
