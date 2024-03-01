@@ -14,7 +14,7 @@ class DeleteAllCompletedTasksDialogue extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-          "Are you sure you want to delete all completed tasks in '$taskListName'?"),
+          "Are you sure you want to delete all completed tasks in $taskListName?"),
       actions: [
         ElevatedButton(
           onPressed: () {

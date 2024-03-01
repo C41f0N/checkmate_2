@@ -13,7 +13,7 @@ class DeleteTaskListDialogue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Are you sure you want to delete the list '$taskListName'?"),
+      title: Text("Are you sure you want to delete the list $taskListName?"),
       actions: [
         ElevatedButton(
           onPressed: () {
