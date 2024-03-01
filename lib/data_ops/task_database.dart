@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:checkmate_2/models/task_list_model.dart';
 import 'package:checkmate_2/models/task_model.dart';
 import 'package:flutter/material.dart';
@@ -116,16 +118,39 @@ class TaskDatabase extends ChangeNotifier {
         -1;
   }
 
+  // Function to get the viewing tasklist
   TaskList getCurrentTaskList() {
     return taskLists
         .firstWhere((taskList) => taskList.name == currentTaskListName);
   }
 
+  // Function to set the viewing tasklist by name
   void setCurrentTaskList(String listName) {
     if (taskLists.indexWhere((taskList) => taskList.name == listName) != -1) {
       currentTaskListName = listName;
 
       notifyListeners();
     }
+  }
+
+  // To convert the data to a json map structure
+  Map<String, dynamic> toJson() {
+    return {
+      "taskLists": taskLists.map((taskList) => taskList.toJson()).toList(),
+    };
+  }
+
+  // To load data from json string
+  void fromJson(String jsonData) {
+    // Decoding the string data to Map structure
+    Map<String, dynamic> databaseData = jsonDecode(jsonData);
+
+    // Loading the Map structure for taskLists
+    List<dynamic> taskListsJson = databaseData["taskLists"];
+
+    // Using the loaded Map structure to create TaskList objects
+    taskLists = taskListsJson
+        .map((jsonTaskList) => TaskList.fromJson(jsonTaskList))
+        .toList();
   }
 }

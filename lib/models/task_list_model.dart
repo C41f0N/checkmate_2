@@ -6,6 +6,25 @@ class TaskList {
 
   TaskList(this.name, this.tasks);
 
+  // To create object from jsonData
+  TaskList.fromJson(Map<String, dynamic> jsonData) {
+    // Get the taskList name from the Map structure
+    name = jsonData["name"];
+
+    // Loading the Map structure for tasks
+    List<dynamic> jsonTasks = jsonData["tasks"];
+
+    // Using the loaded Map structure to create Task objects
+    tasks = jsonTasks.map((jsonTask) => Task.fromJson(jsonTask)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "name": name,
+      "tasks": tasks.map((task) => task.toJson()).toList(),
+    };
+  }
+
   // To add a task to the list
   void addTask(String taskName) {
     // Add the task if another one by it's name exists

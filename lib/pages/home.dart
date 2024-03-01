@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:checkmate_2/data_ops/task_database.dart';
 import 'package:checkmate_2/dialogues/add_task.dart';
 import 'package:checkmate_2/dialogues/add_task_list.dart';
@@ -25,6 +27,7 @@ class _HomePageState extends State<HomePage> {
     return Consumer<TaskDatabase>(
       builder: (context, database, child) {
         TaskList taskList = database.getCurrentTaskList();
+
         return Scaffold(
           // AppBar
           appBar: AppBar(
@@ -172,8 +175,9 @@ class _HomePageState extends State<HomePage> {
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               showDialog(
-                  context: context,
-                  builder: (context) => const AddTaskDialogue());
+                context: context,
+                builder: (context) => const AddTaskDialogue(),
+              );
             },
             child: const Icon(Icons.add),
           ),
