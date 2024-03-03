@@ -21,7 +21,8 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => TaskDatabase(),
       child: MaterialApp(
-        title: 'CheckMate 2.0',
+        debugShowCheckedModeBanner: false,
+        title: 'CheckMate',
         theme: ThemeData(
           colorScheme: ColorScheme(
             brightness: Brightness.dark,

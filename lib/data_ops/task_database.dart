@@ -30,10 +30,10 @@ class TaskDatabase extends ChangeNotifier {
 
   void loadDefaultData() {
     taskLists = [
-      TaskList("My List", [
+      TaskList("My Daily Routine", [
         Task("Make bed", true),
         Task("Make eggs", false),
-        Task("Go to work", true),
+        Task("Go to work", false),
       ])
     ];
 
