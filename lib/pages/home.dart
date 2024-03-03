@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:checkmate_2/data_ops/task_database.dart';
 import 'package:checkmate_2/dialogues/add_task.dart';
 import 'package:checkmate_2/dialogues/add_task_list.dart';
@@ -7,11 +5,8 @@ import 'package:checkmate_2/dialogues/delete_all_completed_tasks.dart';
 import 'package:checkmate_2/dialogues/delete_task.dart';
 import 'package:checkmate_2/dialogues/delete_task_list.dart';
 import 'package:checkmate_2/models/task_list_model.dart';
-import 'package:checkmate_2/models/task_model.dart';
 import 'package:checkmate_2/widgets/task_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {

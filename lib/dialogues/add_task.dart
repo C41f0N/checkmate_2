@@ -41,7 +41,6 @@ class _AddTaskDialogueState extends State<AddTaskDialogue> {
                 ElevatedButton(
                     onPressed: () {
                       if (controller.text.isNotEmpty) {
-                        print("Here");
                         if (!database.taskExists(
                             controller.text, database.currentTaskListName)) {
                           setState(() {
