@@ -33,6 +33,30 @@ class _HomePageState extends State<HomePage> {
           // AppBar
           appBar: AppBar(
             title: const Text("C H E C K M A T E"),
+            actions: [
+              PopupMenuButton(
+                color: Theme.of(context).colorScheme.secondary,
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                      child: const Text("Remove Completed Tasks"),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => DeleteAllCompletedTasksDialogue(
+                            taskListName: database.currentTaskListName,
+                            deleteAllCompletedTasksMethod: () {
+                              database.deleteAllCompletedTasks(
+                                  database.currentTaskListName);
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ];
+                },
+              )
+            ],
           ),
 
           // Drawer
@@ -136,19 +160,6 @@ class _HomePageState extends State<HomePage> {
           ),
 
           body: GestureDetector(
-            // To delete all completed tasks
-            onDoubleTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => DeleteAllCompletedTasksDialogue(
-                  taskListName: database.currentTaskListName,
-                  deleteAllCompletedTasksMethod: () {
-                    database
-                        .deleteAllCompletedTasks(database.currentTaskListName);
-                  },
-                ),
-              );
-            },
             child: ListView.builder(
               itemCount: taskList.tasks.length,
               itemBuilder: (context, index) => TaskCard(
