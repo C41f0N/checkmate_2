@@ -4,6 +4,7 @@ import 'package:checkmate_2/dialogues/add_task_list.dart';
 import 'package:checkmate_2/dialogues/delete_all_completed_tasks.dart';
 import 'package:checkmate_2/dialogues/delete_task.dart';
 import 'package:checkmate_2/dialogues/delete_task_list.dart';
+import 'package:checkmate_2/dialogues/task_card_options.dart';
 import 'package:checkmate_2/models/task_list_model.dart';
 import 'package:checkmate_2/widgets/task_card.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ];
                 },
-              )
+              ),
             ],
           ),
 
@@ -154,28 +155,21 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          body: GestureDetector(
-            child: ListView.builder(
-              itemCount: taskList.tasks.length,
-              itemBuilder: (context, index) => TaskCard(
-                task: taskList.tasks[index],
-                onTap: () {
-                  database.toggleTask(
-                      taskList.name, taskList.tasks[index].name);
-                },
-                onLongPress: () {
-                  showDialog(
-                    context: context,
-                    builder: ((context) => DeleteTaskDialogue(
-                          taskName: taskList.tasks[index].name,
-                          deleteTaskMethod: () {
-                            database.deleteTask(
-                                taskList.tasks[index].name, taskList.name);
-                          },
-                        )),
-                  );
-                },
-              ),
+          body: ListView.builder(
+            itemCount: taskList.tasks.length,
+            itemBuilder: (context, index) => TaskCard(
+              task: taskList.tasks[index],
+              onTap: () {
+                database.toggleTask(taskList.name, taskList.tasks[index].name);
+              },
+              onLongPress: () {
+                showDialog(
+                  context: context,
+                  builder: ((context) => TaskCardOptions(
+                        task: taskList.tasks[index],
+                      )),
+                );
+              },
             ),
           ),
 
