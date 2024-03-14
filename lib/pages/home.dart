@@ -167,6 +167,21 @@ class _HomePageState extends State<HomePage> {
                   context: context,
                   builder: ((context) => TaskCardOptions(
                         task: taskList.tasks[index],
+                        onEditTap: () {},
+                        onDeleteTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => DeleteTaskDialogue(
+                              taskName: taskList.tasks[index].name,
+                              deleteTaskMethod: () {
+                                database.deleteTask(
+                                    taskList.tasks[index].name, taskList.name);
+                              },
+                            ),
+                          ).then(
+                            (value) => Navigator.of(context).pop(),
+                          );
+                        },
                       )),
                 );
               },

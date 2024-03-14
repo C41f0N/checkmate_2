@@ -6,15 +6,13 @@ class TaskCardOptions extends StatelessWidget {
   const TaskCardOptions({
     super.key,
     required this.task,
-    this.onEditTap,
-    this.onDeleteTap,
-    this.onTransferToTasklistTap,
+    required this.onEditTap,
+    required this.onDeleteTap,
   });
 
   final Task task;
-  final void Function()? onEditTap;
-  final void Function()? onDeleteTap;
-  final void Function()? onTransferToTasklistTap;
+  final void Function() onEditTap;
+  final void Function() onDeleteTap;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +64,9 @@ class TaskCardOptions extends StatelessWidget {
             children: [
               // Edit button
               GestureDetector(
-                onTap: onEditTap,
+                onTap: () {
+                  onEditTap();
+                },
                 child: Container(
                   decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 25, 25, 25),
@@ -92,7 +92,9 @@ class TaskCardOptions extends StatelessWidget {
 
               // Delete button
               GestureDetector(
-                onTap: onDeleteTap,
+                onTap: () {
+                  onDeleteTap();
+                },
                 child: Container(
                   decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 25, 25, 25),
