@@ -4,6 +4,7 @@ import 'package:checkmate_2/dialogues/add_task_list.dart';
 import 'package:checkmate_2/dialogues/delete_all_completed_tasks.dart';
 import 'package:checkmate_2/dialogues/delete_task.dart';
 import 'package:checkmate_2/dialogues/delete_task_list.dart';
+import 'package:checkmate_2/dialogues/edit_task_dialogue.dart';
 import 'package:checkmate_2/dialogues/task_card_options.dart';
 import 'package:checkmate_2/models/task_list_model.dart';
 import 'package:checkmate_2/widgets/task_card.dart';
@@ -167,7 +168,17 @@ class _HomePageState extends State<HomePage> {
                   context: context,
                   builder: ((context) => TaskCardOptions(
                         task: taskList.tasks[index],
-                        onEditTap: () {},
+                        onEditTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => EditTaskDialogue(
+                              task: taskList.tasks[index],
+                              taskListName: taskList.name,
+                            ),
+                          ).then(
+                            (value) => Navigator.of(context).pop(),
+                          );
+                        },
                         onDeleteTap: () {
                           showDialog(
                             context: context,
@@ -175,7 +186,9 @@ class _HomePageState extends State<HomePage> {
                               taskName: taskList.tasks[index].name,
                               deleteTaskMethod: () {
                                 database.deleteTask(
-                                    taskList.tasks[index].name, taskList.name);
+                                  taskList.tasks[index].name,
+                                  taskList.name,
+                                );
                               },
                             ),
                           ).then(

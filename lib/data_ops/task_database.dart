@@ -88,6 +88,22 @@ class TaskDatabase extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Function to trigger editTask in the respective taskList
+  void editTask(String oldtaskName, String newTaskName, String taskListName) {
+    // Getting the appropriate task list.
+    int taskListIndex =
+        taskLists.indexWhere((taskList) => taskList.name == taskListName);
+
+    // Calling the function
+    taskLists[taskListIndex].editTask(oldtaskName, newTaskName);
+
+    // Save data to local database
+    saveDataToDevice();
+
+    // Notifying Listeners
+    notifyListeners();
+  }
+
   // To trigger the taskExist function in the specific taskList
   bool taskExists(String taskName, String taskListName) {
     // Getting the appropriate task list.

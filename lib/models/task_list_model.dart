@@ -39,6 +39,15 @@ class TaskList {
     tasks.removeWhere((task) => task.name == taskName);
   }
 
+  // To edit a task to the list
+  void editTask(String oldtaskName, String newTaskName) {
+    // If a task with the new name doesnt exist
+    if (!taskExists(newTaskName)) {
+      // Rename the first occourance of task
+      tasks.where((task) => task.name == oldtaskName).first.name = newTaskName;
+    }
+  }
+
   // To delete all completed tasks
   void deleteAllCompletedTasks() {
     tasks.removeWhere((task) => task.completed);
