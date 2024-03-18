@@ -20,6 +20,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late bool reorderMode;
+
+  @override
+  void initState() {
+    reorderMode = false;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<TaskDatabase>(
@@ -30,30 +38,49 @@ class _HomePageState extends State<HomePage> {
         return Scaffold(
           // AppBar
           appBar: AppBar(
-            title: const Text("C H E C K M A T E"),
+            automaticallyImplyLeading: !reorderMode,
+            title: Text(!reorderMode ? "C H E C K M A T E" : "R E O R D E R"),
             actions: [
-              PopupMenuButton(
-                color: Theme.of(context).colorScheme.secondary,
-                itemBuilder: (context) {
-                  return [
-                    PopupMenuItem(
-                      child: const Text("Remove Completed Tasks"),
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => DeleteAllCompletedTasksDialogue(
-                            taskListName: database.currentTaskListName,
-                            deleteAllCompletedTasksMethod: () {
-                              database.deleteAllCompletedTasks(
-                                  database.currentTaskListName);
+              !reorderMode
+                  ? PopupMenuButton(
+                      color: Theme.of(context).colorScheme.secondary,
+                      itemBuilder: (context) {
+                        return [
+                          PopupMenuItem(
+                            child: const Text("Remove Completed Tasks"),
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    DeleteAllCompletedTasksDialogue(
+                                  taskListName: database.currentTaskListName,
+                                  deleteAllCompletedTasksMethod: () {
+                                    database.deleteAllCompletedTasks(
+                                        database.currentTaskListName);
+                                  },
+                                ),
+                              );
                             },
                           ),
-                        );
+                          PopupMenuItem(
+                            child: const Text("Reorder Tasks"),
+                            onTap: () {
+                              setState(() {
+                                reorderMode = true;
+                              });
+                            },
+                          ),
+                        ];
                       },
+                    )
+                  : IconButton(
+                      onPressed: () {
+                        setState(() {
+                          reorderMode = false;
+                        });
+                      },
+                      icon: const Icon(Icons.done),
                     ),
-                  ];
-                },
-              ),
             ],
           ),
 
@@ -157,60 +184,77 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          body: ListView.builder(
-            itemCount: taskList.tasks.length,
-            itemBuilder: (context, index) => TaskCard(
-              task: taskList.tasks[index],
-              onTap: () {
-                database.toggleTask(taskList.name, taskList.tasks[index].name);
-              },
-              onLongPress: () {
-                showDialog(
-                  context: context,
-                  builder: ((context) => TaskCardOptions(
-                        task: taskList.tasks[index],
-                        onEditTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => EditTaskDialogue(
+          body: !reorderMode
+              ? ListView.builder(
+                  itemCount: taskList.tasks.length,
+                  itemBuilder: (context, index) => TaskCard(
+                    task: taskList.tasks[index],
+                    onTap: () {
+                      database.toggleTask(
+                          taskList.name, taskList.tasks[index].name);
+                    },
+                    onLongPress: () {
+                      showDialog(
+                        context: context,
+                        builder: ((context) => TaskCardOptions(
                               task: taskList.tasks[index],
-                              taskListName: taskList.name,
-                            ),
-                          ).then(
-                            (value) => Navigator.of(context).pop(),
-                          );
-                        },
-                        onDeleteTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => DeleteTaskDialogue(
-                              taskName: taskList.tasks[index].name,
-                              deleteTaskMethod: () {
-                                database.deleteTask(
-                                  taskList.tasks[index].name,
-                                  taskList.name,
+                              onEditTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => EditTaskDialogue(
+                                    task: taskList.tasks[index],
+                                    taskListName: taskList.name,
+                                  ),
+                                ).then(
+                                  (value) => Navigator.of(context).pop(),
                                 );
                               },
-                            ),
-                          ).then(
-                            (value) => Navigator.of(context).pop(),
-                          );
-                        },
-                        onTransferToTasklistTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => TransferTaskDialogue(
-                              task: taskList.tasks[index],
-                            ),
-                          ).then(
-                            (value) => Navigator.of(context).pop(),
-                          );
-                        },
-                      )),
-                );
-              },
-            ),
-          ),
+                              onDeleteTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => DeleteTaskDialogue(
+                                    taskName: taskList.tasks[index].name,
+                                    deleteTaskMethod: () {
+                                      database.deleteTask(
+                                        taskList.tasks[index].name,
+                                        taskList.name,
+                                      );
+                                    },
+                                  ),
+                                ).then(
+                                  (value) => Navigator.of(context).pop(),
+                                );
+                              },
+                              onTransferToTasklistTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => TransferTaskDialogue(
+                                    task: taskList.tasks[index],
+                                  ),
+                                ).then(
+                                  (value) => Navigator.of(context).pop(),
+                                );
+                              },
+                            )),
+                      );
+                    },
+                    reorderMode: false,
+                  ),
+                )
+              : ReorderableListView.builder(
+                  onReorder: ((oldIndex, newIndex) {}),
+                  itemBuilder: (BuildContext context, int index) => TaskCard(
+                    key: ValueKey(taskList.tasks[index]),
+                    task: taskList.tasks[index],
+                    onTap: () {
+                      database.toggleTask(
+                          taskList.name, taskList.tasks[index].name);
+                    },
+                    onLongPress: () {},
+                    reorderMode: true,
+                  ),
+                  itemCount: taskList.tasks.length,
+                ),
 
           floatingActionButton: FloatingActionButton(
             onPressed: () {
