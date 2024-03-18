@@ -6,6 +6,7 @@ import 'package:checkmate_2/dialogues/delete_task.dart';
 import 'package:checkmate_2/dialogues/delete_task_list.dart';
 import 'package:checkmate_2/dialogues/edit_task_dialogue.dart';
 import 'package:checkmate_2/dialogues/task_card_options.dart';
+import 'package:checkmate_2/dialogues/transfer_task_dialogue.dart';
 import 'package:checkmate_2/models/task_list_model.dart';
 import 'package:checkmate_2/widgets/task_card.dart';
 import 'package:flutter/material.dart';
@@ -190,6 +191,16 @@ class _HomePageState extends State<HomePage> {
                                   taskList.name,
                                 );
                               },
+                            ),
+                          ).then(
+                            (value) => Navigator.of(context).pop(),
+                          );
+                        },
+                        onTransferToTasklistTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => TransferTaskDialogue(
+                              task: taskList.tasks[index],
                             ),
                           ).then(
                             (value) => Navigator.of(context).pop(),

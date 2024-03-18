@@ -47,7 +47,9 @@ class _AddTaskDialogueState extends State<AddTaskDialogue> {
                             errorText = null;
                           });
                           database.addTask(
-                              controller.text, database.currentTaskListName);
+                            taskName: controller.text,
+                            taskListName: database.currentTaskListName,
+                          );
                           Navigator.of(context).pop();
                         } else {
                           setState(() {

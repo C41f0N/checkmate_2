@@ -53,27 +53,28 @@ class _EditTaskDialogueState extends State<EditTaskDialogue> {
 
                 // Edit task button
                 ElevatedButton(
-                    onPressed: () {
-                      if (controller.text.isNotEmpty) {
-                        if (!database.taskExists(
-                            controller.text, database.currentTaskListName)) {
-                          setState(() {
-                            errorText = null;
-                          });
-                          database.editTask(
-                            widget.task.name,
-                            controller.text,
-                            database.currentTaskListName,
-                          );
-                          Navigator.of(context).pop();
-                        } else {
-                          setState(() {
-                            errorText = "Task name already exists.";
-                          });
-                        }
+                  onPressed: () {
+                    if (controller.text.isNotEmpty) {
+                      if (!database.taskExists(
+                          controller.text, database.currentTaskListName)) {
+                        setState(() {
+                          errorText = null;
+                        });
+                        database.editTask(
+                          widget.task.name,
+                          controller.text,
+                          database.currentTaskListName,
+                        );
+                        Navigator.of(context).pop();
+                      } else {
+                        setState(() {
+                          errorText = "Task name already exists.";
+                        });
                       }
-                    },
-                    child: const Text("Edit")),
+                    }
+                  },
+                  child: const Text("Done"),
+                ),
               ],
             ),
           ));

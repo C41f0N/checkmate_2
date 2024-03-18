@@ -8,11 +8,13 @@ class TaskCardOptions extends StatelessWidget {
     required this.task,
     required this.onEditTap,
     required this.onDeleteTap,
+    required this.onTransferToTasklistTap,
   });
 
   final Task task;
   final void Function() onEditTap;
   final void Function() onDeleteTap;
+  final void Function() onTransferToTasklistTap;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class TaskCardOptions extends StatelessWidget {
         ),
       ),
       content: SizedBox(
-        height: 150,
+        height: 200,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           child: Column(
@@ -119,30 +121,30 @@ class TaskCardOptions extends StatelessWidget {
               ),
 
               // Transfer to task list button
-              // GestureDetector(
-              //   onTap: onTransferToTasklistTap,
-              //   child: Container(
-              //     decoration: BoxDecoration(
-              //       color: const Color.fromARGB(255, 25, 25, 25),
-              //       borderRadius: BorderRadius.circular(30),
-              //     ),
-              //     width: MediaQuery.of(context).size.width * 0.6,
-              //     height: 55,
-              //     child: const Padding(
-              //       padding: EdgeInsets.symmetric(horizontal: 20.0),
-              //       child: Row(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         children: [
-              //           Icon(Icons.arrow_right_outlined),
-              //           SizedBox(
-              //             width: 20,
-              //           ),
-              //           Text("Transfer to another list"),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              GestureDetector(
+                onTap: onTransferToTasklistTap,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 25, 25, 25),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: 55,
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.arrow_forward),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text("Transfer"),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

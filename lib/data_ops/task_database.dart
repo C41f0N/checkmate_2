@@ -28,6 +28,10 @@ class TaskDatabase extends ChangeNotifier {
     }
   }
 
+  //
+  // Task Operations
+  //
+
   void loadDefaultData() {
     taskLists = [
       TaskList("My Daily Routine", [
@@ -57,13 +61,17 @@ class TaskDatabase extends ChangeNotifier {
   }
 
   // Function to trigger addTask in the respective taskList
-  void addTask(String taskName, String taskListName) {
+  void addTask({
+    required String taskName,
+    required String taskListName,
+    bool completed = false,
+  }) {
     // Getting the appropriate task list.
     int taskListIndex =
         taskLists.indexWhere((taskList) => taskList.name == taskListName);
 
     // Calling the function
-    taskLists[taskListIndex].addTask(taskName);
+    taskLists[taskListIndex].addTask(taskName: taskName, completed: completed);
 
     // Save data to local database
     saveDataToDevice();
@@ -113,6 +121,38 @@ class TaskDatabase extends ChangeNotifier {
     // Calling the function and returning the value
     return taskLists[taskListIndex].taskExists(taskName);
   }
+
+  // Transfer a task from one list to the other
+  void transferTask(
+      String taskName, String oldTaskListName, String newTaskListName) {
+    // Check if task exists in old list
+    if (taskExists(taskName, oldTaskListName)) {
+      // Get task object from old list
+      Task task = taskLists
+          .where((taskList) => taskList.name == oldTaskListName)
+          .first
+          .tasks
+          .where((task) => task.name == taskName)
+          .first;
+
+      // Delete task in old list
+      deleteTask(taskName, oldTaskListName);
+
+      // Add task to new list
+      addTask(
+        taskName: taskName,
+        taskListName: newTaskListName,
+        completed: task.completed,
+      );
+
+      // Notify Listeners
+      notifyListeners();
+    }
+  }
+
+  //
+  // Task List Operations
+  //
 
   // Function to add a new task list
   void addTaskList(String taskListName) {
@@ -188,6 +228,10 @@ class TaskDatabase extends ChangeNotifier {
     }
   }
 
+//
+// Data parsing operations
+//
+
   // To convert the data to a json map structure
   Map<String, dynamic> toJson() {
     return {
@@ -205,6 +249,10 @@ class TaskDatabase extends ChangeNotifier {
         .map((jsonTaskList) => TaskList.fromJson(jsonTaskList))
         .toList();
   }
+
+//
+// Data Persistance operations
+//
 
   // Function to save data to local storage
   void saveDataToDevice() {

@@ -26,10 +26,13 @@ class TaskList {
   }
 
   // To add a task to the list
-  void addTask(String taskName) {
+  void addTask({
+    required String taskName,
+    bool completed = false,
+  }) {
     // Add the task if another one by it's name exists
     if (!taskExists(taskName)) {
-      tasks.add(Task(taskName, false));
+      tasks.add(Task(taskName, completed));
     }
   }
 
