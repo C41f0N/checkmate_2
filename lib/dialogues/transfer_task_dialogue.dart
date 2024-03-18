@@ -59,6 +59,7 @@ class _TransferTaskDialogueState extends State<TransferTaskDialogue> {
                                         database.currentTaskListName,
                                         taskLists[index].name,
                                       );
+                                      Navigator.pop(context);
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(

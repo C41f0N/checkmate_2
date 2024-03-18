@@ -242,7 +242,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                 )
               : ReorderableListView.builder(
-                  onReorder: ((oldIndex, newIndex) {}),
+                  onReorder: ((oldIndex, newIndex) {
+                    database.reorderTask(
+                      taskListName: database.currentTaskListName,
+                      oldIndex: oldIndex,
+                      newIndex: newIndex,
+                    );
+                  }),
                   itemBuilder: (BuildContext context, int index) => TaskCard(
                     key: ValueKey(taskList.tasks[index]),
                     task: taskList.tasks[index],

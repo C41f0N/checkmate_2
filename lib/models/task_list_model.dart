@@ -67,4 +67,24 @@ class TaskList {
   bool taskExists(String taskName) {
     return tasks.indexWhere((task) => task.name == taskName) != -1;
   }
+
+  void reorderTask({
+    required int oldIndex,
+    required int newIndex,
+  }) {
+    // Remove task from position
+    Task task = tasks.removeAt(oldIndex);
+
+    if (oldIndex <= newIndex) newIndex--;
+
+    // Put in new place
+    if (newIndex > tasks.length) {
+      addTask(
+        taskName: task.name,
+        completed: task.completed,
+      );
+    } else {
+      tasks.insert(newIndex, task);
+    }
+  }
 }

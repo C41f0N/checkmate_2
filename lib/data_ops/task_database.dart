@@ -145,9 +145,33 @@ class TaskDatabase extends ChangeNotifier {
         completed: task.completed,
       );
 
+      // Save data to local database
+      saveDataToDevice();
+
       // Notify Listeners
       notifyListeners();
     }
+  }
+
+  // toggle reorderTask in the specific taskList
+  void reorderTask({
+    required String taskListName,
+    required int oldIndex,
+    required int newIndex,
+  }) {
+    taskLists
+        .where((taskList) => taskList.name == taskListName)
+        .first
+        .reorderTask(
+          oldIndex: oldIndex,
+          newIndex: newIndex,
+        );
+
+    // Save data to local database
+    saveDataToDevice();
+
+    // Notify listeners
+    notifyListeners();
   }
 
   //
