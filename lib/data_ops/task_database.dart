@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 class TaskDatabase extends ChangeNotifier {
   late List<TaskList> taskLists;
   late String currentTaskListName;
+  late bool addTasksToEnd;
 
   Box localDatabase = Hive.box("CHECKMATE_DATABASE");
 
@@ -41,6 +42,7 @@ class TaskDatabase extends ChangeNotifier {
       ])
     ];
 
+    addTasksToEnd = false;
     currentTaskListName = taskLists[0].name;
   }
 
@@ -71,7 +73,8 @@ class TaskDatabase extends ChangeNotifier {
         taskLists.indexWhere((taskList) => taskList.name == taskListName);
 
     // Calling the function
-    taskLists[taskListIndex].addTask(taskName: taskName, completed: completed);
+    taskLists[taskListIndex].addTask(
+        taskName: taskName, completed: completed, addTaskToEnd: addTasksToEnd);
 
     // Save data to local database
     saveDataToDevice();
@@ -252,6 +255,13 @@ class TaskDatabase extends ChangeNotifier {
     }
   }
 
+  // Function to set value of addTasksToEnd
+  void setAddTasksToEnd(bool value) {
+    addTasksToEnd = value;
+    saveDataToDevice();
+    notifyListeners();
+  }
+
 //
 // Data parsing operations
 //
@@ -259,6 +269,7 @@ class TaskDatabase extends ChangeNotifier {
   // To convert the data to a json map structure
   Map<String, dynamic> toJson() {
     return {
+      "addTasksToEnd": addTasksToEnd,
       "taskLists": taskLists.map((taskList) => taskList.toJson()).toList(),
     };
   }
@@ -267,6 +278,7 @@ class TaskDatabase extends ChangeNotifier {
   void fromJson(Map<String, dynamic> jsonData) {
     // Loading the Map structure for taskLists
     List<dynamic> taskListsJson = jsonData["taskLists"];
+    addTasksToEnd = jsonData["addTasksToEnd"];
 
     // Using the loaded Map structure to create TaskList objects
     taskLists = taskListsJson

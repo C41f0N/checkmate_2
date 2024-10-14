@@ -8,6 +8,7 @@ import 'package:checkmate_2/dialogues/edit_task_dialogue.dart';
 import 'package:checkmate_2/dialogues/task_card_options.dart';
 import 'package:checkmate_2/dialogues/transfer_task_dialogue.dart';
 import 'package:checkmate_2/models/task_list_model.dart';
+import 'package:checkmate_2/pages/settings.dart';
 import 'package:checkmate_2/widgets/task_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -68,6 +69,16 @@ class _HomePageState extends State<HomePage> {
                               setState(() {
                                 reorderMode = true;
                               });
+                            },
+                          ),
+                          PopupMenuItem(
+                            child: const Text("Settings"),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const SettingsPage(),
+                                ),
+                              );
                             },
                           ),
                         ];

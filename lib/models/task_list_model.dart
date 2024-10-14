@@ -29,10 +29,15 @@ class TaskList {
   void addTask({
     required String taskName,
     bool completed = false,
+    bool addTaskToEnd = false,
   }) {
     // Add the task if another one by it's name exists
     if (!taskExists(taskName)) {
-      tasks.add(Task(taskName, completed));
+      if (addTaskToEnd) {
+        tasks.add(Task(taskName, completed));
+      } else {
+        tasks.insert(0, Task(taskName, completed));
+      }
     }
   }
 
