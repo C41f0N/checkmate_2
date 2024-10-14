@@ -24,6 +24,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'CheckMate',
         theme: ThemeData(
+          snackBarTheme: const SnackBarThemeData(
+            backgroundColor: Color.fromARGB(255, 25, 25, 25),
+          ),
           colorScheme: ColorScheme(
             brightness: Brightness.dark,
             primary: Colors.blue[900]!,

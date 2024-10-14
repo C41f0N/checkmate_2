@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:checkmate_2/data_ops/task_database.dart';
 import 'package:checkmate_2/dialogues/add_task.dart';
 import 'package:checkmate_2/dialogues/add_task_list.dart';
@@ -66,6 +68,21 @@ class _HomePageState extends State<HomePage> {
                           PopupMenuItem(
                             child: const Text("Reorder Tasks"),
                             onTap: () {
+                              if (Platform.isAndroid || Platform.isIOS) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      "Tap and hold tasks to reorder.",
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+
                               setState(() {
                                 reorderMode = true;
                               });
