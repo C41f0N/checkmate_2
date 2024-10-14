@@ -69,6 +69,7 @@ class _HomePageState extends State<HomePage> {
                             child: const Text("Reorder Tasks"),
                             onTap: () {
                               if (Platform.isAndroid || Platform.isIOS) {
+                                ScaffoldMessenger.of(context).clearSnackBars();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
